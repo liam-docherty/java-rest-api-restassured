@@ -12,9 +12,6 @@ public class GetSuccess {
     public void getHealthCheckReturnsSuccessCode() {
         Response response = given().get(getPingEndpoint());
         confirmStatusCode(response, 201);
-
-//        int statusCode = response.getStatusCode();
-//        assertThat(statusCode, is(201));
     }
 
 }

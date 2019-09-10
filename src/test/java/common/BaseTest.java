@@ -10,9 +10,14 @@ import static org.hamcrest.Matchers.is;
 public class BaseTest {
 
     private static final String BASE_ENDPOINT = "https://restful-booker.herokuapp.com/";
+    private static final String AUTH_ENDPOINT = BASE_ENDPOINT + "auth/";
     private static final String BOOKING_ENDPOINT = BASE_ENDPOINT + "booking/";
     private static final String PING_ENDPOINT = BASE_ENDPOINT + "ping/";
     private static final String APPLICATION_JSON = "application/json";
+
+    public static String getAuthEndpoint() {
+        return AUTH_ENDPOINT;
+    }
 
     public static String getBookingEndpoint() {
         return BOOKING_ENDPOINT;
