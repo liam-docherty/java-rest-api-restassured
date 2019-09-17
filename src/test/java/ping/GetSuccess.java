@@ -14,4 +14,13 @@ public class GetSuccess {
         confirmStatusCode(response, 201);
     }
 
+    @Test
+    public void getHealthCheckReturnsSuccessCode_Bdd() {
+        given().
+        when().
+            get(getPingEndpoint()).
+        then().
+            assertThat().statusCode(201);
+    }
+
 }
