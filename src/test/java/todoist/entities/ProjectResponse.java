@@ -1,8 +1,9 @@
-package todoist.projects;
+package todoist.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Project {
+// TODO: Investigate @JsonPropertyOrder, looks like it specifies the expected order
+public class ProjectResponse {
 
     private int id;
     private int order;
