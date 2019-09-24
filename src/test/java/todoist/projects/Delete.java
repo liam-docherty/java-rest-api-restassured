@@ -12,7 +12,6 @@ public class Delete {
     public void deleteProject() {
 
         // TODO: Common code, remove duplication
-        // TODO: Hardcoded url, remove duplication
         // TODO: Remove logging once happy with tests
         Header authorization = new Header("Authorization", getApiToken());
 
@@ -20,7 +19,7 @@ public class Delete {
                 header(authorization).
                 log().all().
         when().
-                delete("https://api.todoist.com/rest/v1/projects/2217677524").
+                delete(getProjectsEndpoint("2218111869")).
         then().
                 log().body().
                 assertThat().statusCode(204);

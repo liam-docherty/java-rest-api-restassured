@@ -16,7 +16,6 @@ public class Post {
     public void createProject() {
 
         // TODO: Common header code, remove duplication
-        // TODO: Hardcoded url, remove duplication
         // TODO: Remove logging once happy with tests
         Header authorization = new Header("Authorization", getApiToken());
         ProjectRequest payload = new ProjectRequest("deleteme-serialization");
@@ -29,7 +28,7 @@ public class Post {
                 body(payload).
                 log().all().
         when().
-                post("https://api.todoist.com/rest/v1/projects").
+                post(getProjectsEndpoint()).
         then().
                 log().body().
                 assertThat().statusCode(200);

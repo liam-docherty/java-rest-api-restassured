@@ -12,7 +12,6 @@ public class Get {
     public void retrieveAllActiveTasks() {
 
         // TODO: Common header code, remove duplication
-        // TODO: Hardcoded url, remove duplication
         // TODO: Remove logging once happy with tests
         Header authorization = new Header("Authorization", getApiToken());
 
@@ -20,7 +19,7 @@ public class Get {
                 header(authorization).
                 log().all().
         when().
-                get("https://api.todoist.com/rest/v1/tasks").
+                get(getTasksEndpoint()).
         then().
                 log().body().
                 assertThat().statusCode(200);
