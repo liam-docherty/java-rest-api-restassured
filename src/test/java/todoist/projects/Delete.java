@@ -6,12 +6,12 @@ import org.junit.Test;
 import static io.restassured.RestAssured.given;
 import static todoist.BaseTest.*;
 
-public class Get {
+public class Delete {
 
     @Test
-    public void retrieveAllProjects() {
+    public void deleteProject() {
 
-        // TODO: Common header code, remove duplication
+        // TODO: Common code, remove duplication
         // TODO: Hardcoded url, remove duplication
         // TODO: Remove logging once happy with tests
         Header header = new Header("Authorization", getApiToken());
@@ -20,10 +20,10 @@ public class Get {
                 header(header).
                 log().all().
         when().
-                get("https://api.todoist.com/rest/v1/projects").
+                delete("https://api.todoist.com/rest/v1/projects/2217677524").
         then().
                 log().body().
-                assertThat().statusCode(200);
+                assertThat().statusCode(204);
 
     }
 
