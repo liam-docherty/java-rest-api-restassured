@@ -14,10 +14,10 @@ public class Get {
         // TODO: Common header code, remove duplication
         // TODO: Hardcoded url, remove duplication
         // TODO: Remove logging once happy with tests
-        Header header = new Header("Authorization", getApiToken());
+        Header authorization = new Header("Authorization", getApiToken());
 
         given().
-                header(header).
+                header(authorization).
                 log().all().
         when().
                 get("https://api.todoist.com/rest/v1/projects").
