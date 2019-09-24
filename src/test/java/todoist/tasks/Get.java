@@ -1,0 +1,30 @@
+package todoist.tasks;
+
+import io.restassured.http.Header;
+import org.junit.Test;
+
+import static io.restassured.RestAssured.given;
+import static todoist.BaseTest.*;
+
+public class Get {
+
+    @Test
+    public void retrieveAllActiveTasks() {
+
+        // TODO: Common header code, remove duplication
+        // TODO: Hardcoded url, remove duplication
+        // TODO: Remove logging once happy with tests
+        Header authorization = new Header("Authorization", getApiToken());
+
+        given().
+                header(authorization).
+                log().all().
+        when().
+                get("https://api.todoist.com/rest/v1/tasks").
+        then().
+                log().body().
+                assertThat().statusCode(200);
+
+    }
+
+}
