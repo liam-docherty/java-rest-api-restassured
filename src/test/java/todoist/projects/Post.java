@@ -3,12 +3,15 @@ package todoist.projects;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
+import io.restassured.response.Response;
 import org.junit.Test;
 import todoist.entities.ProjectRequest;
 import todoist.entities.ProjectResponse;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.config.EncoderConfig.encoderConfig;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static todoist.BaseTest.*;
 
 public class Post {
@@ -21,7 +24,7 @@ public class Post {
         Header authorization = new Header("Authorization", getApiToken());
         ProjectRequest payload = new ProjectRequest("deleteme-serialization");
 
-        ProjectResponse response =
+        Response response =
 
         given().
                 // This is required because the todoist API will reject the call if the 'charset=UTF-8' is appended
@@ -31,17 +34,17 @@ public class Post {
                 body(payload).
                 log().all().
         when().
-                post(getProjectsEndpoint()).
-        then().
-                log().body().
-                assertThat().statusCode(200).
-                assertThat().contentType(ContentType.JSON).
-                extract().as(ProjectResponse.class);
+                post(getProjectsEndpoint());
 
-        System.out.println("ID = " + response.getId());
-        System.out.println("Name = " + response.getName());
-        System.out.println("Order = " + response.getOrder());
-        System.out.println("Comment Count = " + response.getCommentCount());
+        assertThat(response.getStatusCode(), is(200));
+        // TODO: Replace hardcoded value
+        assertThat(response.contentType(), is("application/json"));
+
+        ProjectResponse body = response.getBody().as(ProjectResponse.class);
+        System.out.println("ID = " + body.getId());
+        System.out.println("Name = " + body.getName());
+        System.out.println("Order = " + body.getOrder());
+        System.out.println("Comment Count = " + body.getCommentCount());
 
     }
 
