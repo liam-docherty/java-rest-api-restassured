@@ -1,5 +1,9 @@
 package todoist;
 
+import io.restassured.http.Header;
+
+import static io.restassured.RestAssured.given;
+
 public class BaseTest {
 
     private static final String BASE_ENDPOINT = "https://api.todoist.com/rest/v1";
@@ -22,6 +26,18 @@ public class BaseTest {
 
     public static String getApiToken() {
         return API_TOKEN;
+    }
+
+    // TODO: Is this the best place?
+    public static void teardownProject(String id) {
+
+        // TODO: Common header code, remove duplication
+        Header authorization = new Header("Authorization", getApiToken());
+
+        given().
+                header(authorization).
+                when().
+                delete(getProjectsEndpoint(id));
     }
 
 }

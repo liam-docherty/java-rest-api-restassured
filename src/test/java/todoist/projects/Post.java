@@ -20,12 +20,13 @@ public class Post {
 
         Header authorization = new Header("Authorization", getApiToken());
 
+        // TODO: This will be common with the get all Projects tests, move to common area
         Response response =
 
-        given().
-                header(authorization).
-        when().
-                get(getProjectsEndpoint());
+            given().
+                    header(authorization).
+            when().
+                    get(getProjectsEndpoint());
 
         ProjectResponse[] body = response.getBody().as(ProjectResponse[].class);
 
@@ -33,6 +34,7 @@ public class Post {
 
     }
 
+    // TODO: This can be turned into a parameterised test
     @Test
     public void createProjectSuccess() {
 
@@ -45,15 +47,15 @@ public class Post {
 
         Response response =
 
-        given().
-                // TODO: See if this config option can be moved to a Request Specification
-                // This is required because the todoist API will reject the call if the 'charset=UTF-8' is appended
-                config(RestAssuredConfig.config().encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false))).
-                header(authorization).
-                contentType(ContentType.JSON).
-                body(payload).
-        when().
-                post(getProjectsEndpoint());
+            given().
+                    // TODO: See if this config option can be moved to a Request Specification
+                    // This is required because the todoist API will reject the call if the 'charset=UTF-8' is appended
+                    config(RestAssuredConfig.config().encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false))).
+                    header(authorization).
+                    contentType(ContentType.JSON).
+                    body(payload).
+            when().
+                    post(getProjectsEndpoint());
 
         ProjectResponse responseBody = response.getBody().as(ProjectResponse.class);
 
@@ -64,23 +66,12 @@ public class Post {
         assertThat(responseBody.getOrder(), is(existingProjectCount));
         assertThat(responseBody.getCommentCount(), is(0));
 
-        projectTeardown(responseBody.getId().toString());
+        teardownProject(responseBody.getId().toString());
 
     }
 
     // TODO: Add tests with special characters
     // TODO: Add max characters tests
 
-    // TODO: This should be moved to the BaseTest class or similar. It will need to be reused once we need to delete child entities
-    public void projectTeardown(String id) {
-
-        // TODO: Common header code, remove duplication
-        Header authorization = new Header("Authorization", getApiToken());
-
-        given().
-                header(authorization).
-        when().
-                delete(getProjectsEndpoint(id));
-    }
 
 }
