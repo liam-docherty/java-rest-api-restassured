@@ -35,26 +35,30 @@ public class Post {
                 header(authorization).
                 contentType(ContentType.JSON).
                 body(payload).
-                log().all().
         when().
                 post(getProjectsEndpoint());
+
+        ProjectResponse body = response.getBody().as(ProjectResponse.class);
 
         assertThat(response.getStatusCode(), is(200));
         // TODO: Replace hardcoded value
         assertThat(response.contentType(), is("application/json"));
-
-        ProjectResponse body = response.getBody().as(ProjectResponse.class);
-
         assertThat(body.getName(), is(payload.getName()));
         assertThat(body.getCommentCount(), is(0));
 
-        System.out.println("ID = " + body.getId());
-        System.out.println("Name = " + body.getName());
-        System.out.println("Order = " + body.getOrder());
-        System.out.println("Comment Count = " + body.getCommentCount());
+        projectTeardown(body.getId().toString());
 
-        // TODO: After: delete new Project
+    }
 
+    // TODO: This should be moved to the BaseTest class or similar. It will need to be reused once we need to delete child entities
+    public void projectTeardown(String id) {
+        // TODO: Common header code, remove duplication
+        Header authorization = new Header("Authorization", getApiToken());
+
+        given().
+                header(authorization).
+        when().
+                delete(getProjectsEndpoint(id));
     }
 
 }
