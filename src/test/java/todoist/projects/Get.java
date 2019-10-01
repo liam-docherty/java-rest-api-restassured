@@ -16,30 +16,6 @@ import static todoist.BaseTest.*;
 
 public class Get {
 
-    // TODO: This should accept the equivalent of an interface. The tests themselves should set up the payload
-    // TODO: Setup project needs to return the entire response
-    public ProjectResponse setupProject(String name) {
-
-        // TODO: This is duplication of POST test, remove duplication
-        Header authorization = new Header("Authorization", getApiToken());
-        ProjectRequest payload = new ProjectRequest(name);
-
-        Response response =
-
-                given().
-                        // TODO: See if this config option can be moved to a Request Specification
-                        // This is required because the todoist API will reject the call if the 'charset=UTF-8' is appended
-                        config(RestAssuredConfig.config().encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false))).
-                        header(authorization).
-                        contentType(ContentType.JSON).
-                        body(payload).
-                when().
-                        post(getProjectsEndpoint());
-
-        return response.getBody().as(ProjectResponse.class);
-
-    }
-
     @Test
     public void retrieveAllProjectsSuccess() {
 
@@ -70,7 +46,6 @@ public class Get {
 
             given().
                     header(authorization).
-                    log().all().
             when().
                     get(getProjectsEndpoint(newProject.getId().toString()));
 
