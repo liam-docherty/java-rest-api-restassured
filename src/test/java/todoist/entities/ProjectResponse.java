@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ProjectResponse extends Project {
 
     private Number id;
-    private Number order;
+    private int order;
     private int commentCount;
 
     public Number getId() {
         return id;
     }
 
-    public Number getOrder() {
+    public int getOrder() {
         return order;
     }
 

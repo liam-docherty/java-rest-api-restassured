@@ -16,10 +16,27 @@ import static todoist.BaseTest.*;
 
 public class Post {
 
+    public int getExistingProjectCount() {
+
+        Header authorization = new Header("Authorization", getApiToken());
+
+        Response response =
+
+        given().
+                header(authorization).
+        when().
+                get(getProjectsEndpoint());
+
+        ProjectResponse[] body = response.getBody().as(ProjectResponse[].class);
+
+        return body.length;
+
+    }
+
     @Test
     public void createProjectSuccess() {
 
-        // TODO: Before: get current Project count then check that Order in response is current + 1
+        int existingProjectCount = getExistingProjectCount();
 
         // TODO: Common header code, remove duplication
         // TODO: Remove logging once happy with tests
@@ -38,20 +55,25 @@ public class Post {
         when().
                 post(getProjectsEndpoint());
 
-        ProjectResponse body = response.getBody().as(ProjectResponse.class);
+        ProjectResponse responseBody = response.getBody().as(ProjectResponse.class);
 
         assertThat(response.getStatusCode(), is(200));
         // TODO: Replace hardcoded value
-        assertThat(response.contentType(), is("application/json"));
-        assertThat(body.getName(), is(payload.getName()));
-        assertThat(body.getCommentCount(), is(0));
+        assertThat(response.contentType(), is(ContentType.JSON.toString()));
+        assertThat(responseBody.getName(), is(payload.getName()));
+        assertThat(responseBody.getOrder(), is(existingProjectCount));
+        assertThat(responseBody.getCommentCount(), is(0));
 
-        projectTeardown(body.getId().toString());
+        projectTeardown(responseBody.getId().toString());
 
     }
 
+    // TODO: Add tests with special characters
+    // TODO: Add max characters tests
+
     // TODO: This should be moved to the BaseTest class or similar. It will need to be reused once we need to delete child entities
     public void projectTeardown(String id) {
+
         // TODO: Common header code, remove duplication
         Header authorization = new Header("Authorization", getApiToken());
 
