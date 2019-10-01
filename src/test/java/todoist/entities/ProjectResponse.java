@@ -7,7 +7,7 @@ public class ProjectResponse extends Project {
 
     private Number id;
     private Number order;
-    private Number commentCount;
+    private int commentCount;
 
     public Number getId() {
         return id;
@@ -17,9 +17,8 @@ public class ProjectResponse extends Project {
         return order;
     }
 
-
     @JsonProperty("comment_count")
-    public Number getCommentCount() {
+    public int getCommentCount() {
         return commentCount;
     }
 
