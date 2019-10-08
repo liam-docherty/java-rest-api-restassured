@@ -15,11 +15,11 @@ public class Delete {
     @Test
     public void deleteProject() {
 
-        ProjectResponse newProject = setupProject("Project " + java.util.UUID.randomUUID());
+        Response newProjectResponse = setupProject("Project " + java.util.UUID.randomUUID());
+        ProjectResponse newProject = newProjectResponse.getBody().as(ProjectResponse.class);
         String id = newProject.getId().toString();
 
         // TODO: Common code, remove duplication
-        // TODO: Remove logging once happy with tests
         Header authorization = new Header("Authorization", getApiToken());
 
         Response response =

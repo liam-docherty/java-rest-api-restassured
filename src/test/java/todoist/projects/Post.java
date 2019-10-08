@@ -41,7 +41,6 @@ public class Post {
         int existingProjectCount = getExistingProjectCount();
 
         // TODO: Common header code, remove duplication
-        // TODO: Remove logging once happy with tests
         Header authorization = new Header("Authorization", getApiToken());
         ProjectRequest payload = new ProjectRequest("deleteme-serialization");
 

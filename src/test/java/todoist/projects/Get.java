@@ -35,7 +35,9 @@ public class Get {
     @Test
     public void retrieveProjectSuccess() {
 
-        ProjectResponse newProject = setupProject("Project " + java.util.UUID.randomUUID());
+        Response newProjectResponse = setupProject("Project " + java.util.UUID.randomUUID());
+        ProjectResponse newProject = newProjectResponse.getBody().as(ProjectResponse.class);
+        String id = newProject.getId().toString();
 
         Header authorization = new Header("Authorization", getApiToken());
 
@@ -44,7 +46,7 @@ public class Get {
             given().
                     header(authorization).
             when().
-                    get(getProjectsEndpoint(newProject.getId().toString()));
+                    get(getProjectsEndpoint(id));
 
         ProjectResponse responseBody = response.getBody().as(ProjectResponse.class);
 

@@ -35,8 +35,7 @@ public class BaseTest {
     }
 
     // TODO: This should accept the equivalent of an interface. The tests themselves should set up the payload
-    // TODO: Setup project needs to return the entire response
-    public static ProjectResponse setupProject(String name) {
+    public static Response setupProject(String name) {
 
         // TODO: This is duplication of POST test, remove duplication
         Header authorization = new Header("Authorization", getApiToken());
@@ -54,7 +53,7 @@ public class BaseTest {
                 when().
                         post(getProjectsEndpoint());
 
-        return response.getBody().as(ProjectResponse.class);
+        return response;
 
     }
 
@@ -74,7 +73,6 @@ public class BaseTest {
 
     }
 
-    // TODO: Is this the best place?
     public static void teardownProject(String id) {
 
         // TODO: Common header code, remove duplication
