@@ -1,10 +1,13 @@
 package todoist.projects;
 
 import io.restassured.http.Header;
+import io.restassured.response.Response;
 import org.junit.Test;
 import todoist.entities.ProjectResponse;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static todoist.BaseTest.*;
 
 public class Delete {
@@ -13,22 +16,24 @@ public class Delete {
     public void deleteProject() {
 
         ProjectResponse newProject = setupProject("Project " + java.util.UUID.randomUUID());
+        String id = newProject.getId().toString();
 
         // TODO: Common code, remove duplication
         // TODO: Remove logging once happy with tests
         Header authorization = new Header("Authorization", getApiToken());
 
+        Response response =
+
         given().
                 header(authorization).
-                log().all().
         when().
-                delete(getProjectsEndpoint(newProject.getId().toString())).
-        then().
-                log().body().
-                assertThat().statusCode(204);
+                delete(getProjectsEndpoint(id));
 
-        // TODO: Check response is empty
-        // TODO: Check that 404 is returned when using getProject
+        assertThat(response.getStatusCode(), is(204));
+        assertThat(response.getBody().print(), is(""));
+
+        Response getResponse = retrieveProject(id);
+        assertThat(getResponse.getStatusCode(), is(404));
 
     }
 

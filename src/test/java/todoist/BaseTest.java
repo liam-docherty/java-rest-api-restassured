@@ -47,14 +47,30 @@ public class BaseTest {
                 given().
                         // TODO: See if this config option can be moved to a Request Specification
                         // This is required because the todoist API will reject the call if the 'charset=UTF-8' is appended
-                                config(RestAssuredConfig.config().encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false))).
+                        config(RestAssuredConfig.config().encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false))).
                         header(authorization).
                         contentType(ContentType.JSON).
                         body(payload).
-                        when().
+                when().
                         post(getProjectsEndpoint());
 
         return response.getBody().as(ProjectResponse.class);
+
+    }
+
+    public static Response retrieveProject(String id) {
+
+        // TODO: Common header code, remove duplication
+        Header authorization = new Header("Authorization", getApiToken());
+
+        Response response =
+
+                given().
+                        header(authorization).
+                when().
+                        get(getProjectsEndpoint(id));
+
+        return response;
 
     }
 
@@ -66,7 +82,7 @@ public class BaseTest {
 
         given().
                 header(authorization).
-                when().
+        when().
                 delete(getProjectsEndpoint(id));
     }
 
