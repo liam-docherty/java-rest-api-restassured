@@ -4,10 +4,7 @@ import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.response.Response;
 import org.junit.Test;
-import todoist.entities.Project;
 import todoist.entities.ProjectResponse;
-
-import java.util.ArrayList;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,41 +16,36 @@ public class Get {
     @Test
     public void retrieveAllProjectsSuccess() {
 
+        int existingProjectCount = getExistingProjectCount();
+
         // TODO: Common header code, remove duplication
         Header authorization = new Header("Authorization", getApiToken());
-
-        Response response =
-
-        given().
-                header(authorization).
-        when().
-                get(getProjectsEndpoint());
-
-        // ProjectResponse[] responseBody = response.getBody().as(ProjectResponse[].class);
-        ArrayList<ProjectResponse> responseBody = new ArrayList<ProjectResponse>();
-        responseBody = response.getBody().as(responseBody.getClass());
 
         // TODO: Replace all of these random guid generators with a method in base test
         Response newProjectResponse = setupProject("Project " + java.util.UUID.randomUUID());
         ProjectResponse newProject = newProjectResponse.getBody().as(ProjectResponse.class);
         String id = newProject.getId().toString();
 
-        // TODO: Remove this duplicate GET call
-        responseBody.add(newProject);
-
-        Response response2 =
+        Response response =
 
                 given().
                         header(authorization).
                 when().
                         get(getProjectsEndpoint());
 
-        ArrayList<ProjectResponse> responseBody2 = new ArrayList<ProjectResponse>();
-        responseBody2 = response2.getBody().as(responseBody2.getClass());
+        ProjectResponse[] responseBody = response.getBody().as(ProjectResponse[].class);
 
-        assertThat(response2.getStatusCode(), is(200));
-        assertThat(response2.contentType(), is(ContentType.JSON.toString()));
-        assertThat(responseBody2, is(responseBody));
+        // Works assuming new project is added to end of list
+        // TODO: Should instead find the matching ID in the array
+        ProjectResponse newProjectInResponseBody = responseBody[existingProjectCount];
+
+        assertThat(response.getStatusCode(), is(200));
+        assertThat(response.contentType(), is(ContentType.JSON.toString()));
+        assertThat(responseBody.length, is(existingProjectCount + 1));
+        assertThat(newProjectInResponseBody.getId(), is(newProject.getId()));
+        assertThat(newProjectInResponseBody.getName(), is(newProject.getName()));
+        assertThat(newProjectInResponseBody.getCommentCount(), is(newProject.getCommentCount()));
+        assertThat(newProjectInResponseBody.getOrder(), is(newProject.getOrder()));
 
         teardownProject(id);
 

@@ -34,6 +34,24 @@ public class BaseTest {
         return API_TOKEN;
     }
 
+    public static int getExistingProjectCount() {
+
+        Header authorization = new Header("Authorization", getApiToken());
+
+        // TODO: This will be common with the get all Projects tests, move to common area
+        Response response =
+
+                given().
+                        header(authorization).
+                when().
+                        get(getProjectsEndpoint());
+
+        ProjectResponse[] body = response.getBody().as(ProjectResponse[].class);
+
+        return body.length;
+
+    }
+
     // TODO: This should accept the equivalent of an interface. The tests themselves should set up the payload
     public static Response setupProject(String name) {
 
