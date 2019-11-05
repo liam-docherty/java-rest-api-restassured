@@ -17,7 +17,7 @@ public class Delete {
 
         Response newProjectResponse = setupProject("Project " + java.util.UUID.randomUUID());
         ProjectResponse newProject = newProjectResponse.getBody().as(ProjectResponse.class);
-        String id = newProject.getId().toString();
+        Number id = newProject.getId();
 
         // TODO: Common code, remove duplication
         Header authorization = new Header("Authorization", getApiToken());

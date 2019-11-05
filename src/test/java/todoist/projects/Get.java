@@ -16,15 +16,17 @@ public class Get {
     @Test
     public void retrieveAllProjectsSuccess() {
 
-        int existingProjectCount = getExistingProjectCount();
-
         // TODO: Common header code, remove duplication
         Header authorization = new Header("Authorization", getApiToken());
 
         // TODO: Replace all of these random guid generators with a method in base test
-        Response newProjectResponse = setupProject("Project " + java.util.UUID.randomUUID());
-        ProjectResponse newProject = newProjectResponse.getBody().as(ProjectResponse.class);
-        String id = newProject.getId().toString();
+        Response newProjectResponse1 = setupProject("RetrieveAllProjects1 " + java.util.UUID.randomUUID());
+        ProjectResponse newProject1 = newProjectResponse1.getBody().as(ProjectResponse.class);
+        Number id1 = newProject1.getId();
+
+        Response newProjectResponse2 = setupProject("RetrieveAllProjects2 " + java.util.UUID.randomUUID());
+        ProjectResponse newProject2 = newProjectResponse2.getBody().as(ProjectResponse.class);
+        Number id2 = newProject2.getId();
 
         Response response =
 
@@ -35,19 +37,22 @@ public class Get {
 
         ProjectResponse[] responseBody = response.getBody().as(ProjectResponse[].class);
 
-        // Works assuming new project is added to end of list
-        // TODO: Should instead find the matching ID in the array
-        ProjectResponse newProjectInResponseBody = responseBody[existingProjectCount];
+        ProjectResponse projectResponse1 = retrieveProjectFromProjectResponseArray(responseBody, id1);
+        ProjectResponse projectResponse2 = retrieveProjectFromProjectResponseArray(responseBody, id2);
+
+        teardownProject(id1);
+        teardownProject(id2);
 
         assertThat(response.getStatusCode(), is(200));
         assertThat(response.contentType(), is(ContentType.JSON.toString()));
-        assertThat(responseBody.length, is(existingProjectCount + 1));
-        assertThat(newProjectInResponseBody.getId(), is(newProject.getId()));
-        assertThat(newProjectInResponseBody.getName(), is(newProject.getName()));
-        assertThat(newProjectInResponseBody.getCommentCount(), is(newProject.getCommentCount()));
-        assertThat(newProjectInResponseBody.getOrder(), is(newProject.getOrder()));
-
-        teardownProject(id);
+        assertThat(projectResponse1.getId(), is(newProject1.getId()));
+        assertThat(projectResponse1.getName(), is(newProject1.getName()));
+        assertThat(projectResponse1.getCommentCount(), is(newProject1.getCommentCount()));
+        assertThat(projectResponse1.getOrder(), is(newProject1.getOrder()));
+        assertThat(projectResponse2.getId(), is(newProject2.getId()));
+        assertThat(projectResponse2.getName(), is(newProject2.getName()));
+        assertThat(projectResponse2.getCommentCount(), is(newProject2.getCommentCount()));
+        assertThat(projectResponse2.getOrder(), is(newProject2.getOrder()));
 
     }
 
@@ -55,9 +60,9 @@ public class Get {
     @Test
     public void retrieveProjectSuccess() {
 
-        Response newProjectResponse = setupProject("Project " + java.util.UUID.randomUUID());
+        Response newProjectResponse = setupProject("RetrieveProjectSuccess " + java.util.UUID.randomUUID());
         ProjectResponse newProject = newProjectResponse.getBody().as(ProjectResponse.class);
-        String id = newProject.getId().toString();
+        Number id = newProject.getId();
 
         Header authorization = new Header("Authorization", getApiToken());
 
@@ -70,14 +75,14 @@ public class Get {
 
         ProjectResponse responseBody = response.getBody().as(ProjectResponse.class);
 
+        teardownProject(id);
+
         assertThat(response.getStatusCode(), is(200));
         assertThat(response.contentType(), is(ContentType.JSON.toString()));
         assertThat(responseBody.getId(), is(newProject.getId()));
         assertThat(responseBody.getName(), is(newProject.getName()));
         assertThat(responseBody.getCommentCount(), is(newProject.getCommentCount()));
         assertThat(responseBody.getOrder(), is(newProject.getOrder()));
-
-        teardownProject(newProject.getId().toString());
 
     }
 

@@ -40,11 +40,12 @@ public class Post {
         ProjectResponse responseBody = response.getBody().as(ProjectResponse.class);
 
         // Deleting project before assertions in case assertions fail
-        teardownProject(responseBody.getId().toString());
+        teardownProject(responseBody.getId());
 
         assertThat(response.getStatusCode(), is(200));
         assertThat(response.contentType(), is(ContentType.JSON.toString()));
-        // assertThat(responseBody.getId().intValue(), is(greaterThanOrEqualTo(0)));
+        // TODO: Work out how to get the ID assertions working
+        // assertThat(responseBody.getId().intValue(), greaterThanOrEqualTo(0));
         assertThat(responseBody.getName(), is(payload.getName()));
         assertThat(responseBody.getCommentCount(), is(0));
         assertThat(responseBody.getOrder(), is(greaterThanOrEqualTo(0)));
