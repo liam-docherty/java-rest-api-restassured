@@ -11,6 +11,7 @@ import todoist.entities.ProjectResponse;
 import static io.restassured.RestAssured.given;
 import static io.restassured.config.EncoderConfig.encoderConfig;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static todoist.BaseTest.*;
 
@@ -20,11 +21,9 @@ public class Post {
     @Test
     public void createProjectSuccess() {
 
-        int existingProjectCount = getExistingProjectCount();
-
         // TODO: Common header code, remove duplication
         Header authorization = new Header("Authorization", getApiToken());
-        ProjectRequest payload = new ProjectRequest("deleteme-serialization");
+        ProjectRequest payload = new ProjectRequest("CreateProjectSuccess " + java.util.UUID.randomUUID());
 
         Response response =
 
@@ -40,15 +39,15 @@ public class Post {
 
         ProjectResponse responseBody = response.getBody().as(ProjectResponse.class);
 
-        assertThat(response.getStatusCode(), is(200));
-        // TODO: Replace hardcoded value
-        assertThat(response.contentType(), is(ContentType.JSON.toString()));
-        assertThat(responseBody.getName(), is(payload.getName()));
-        assertThat(responseBody.getOrder(), is(existingProjectCount));
-        assertThat(responseBody.getCommentCount(), is(0));
-
+        // Deleting project before assertions in case assertions fail
         teardownProject(responseBody.getId().toString());
 
+        assertThat(response.getStatusCode(), is(200));
+        assertThat(response.contentType(), is(ContentType.JSON.toString()));
+        // assertThat(responseBody.getId().intValue(), is(greaterThanOrEqualTo(0)));
+        assertThat(responseBody.getName(), is(payload.getName()));
+        assertThat(responseBody.getCommentCount(), is(0));
+        assertThat(responseBody.getOrder(), is(greaterThanOrEqualTo(0)));
     }
 
     // TODO: Add tests with special characters
