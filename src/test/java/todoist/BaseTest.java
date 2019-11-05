@@ -50,7 +50,7 @@ public class BaseTest {
                         header(authorization).
                         contentType(ContentType.JSON).
                         body(payload).
-                        when().
+                when().
                         post(getProjectsEndpoint());
 
         return response;
@@ -66,7 +66,7 @@ public class BaseTest {
 
                 given().
                         header(authorization).
-                        when().
+                when().
                         get(getProjectsEndpoint(id));
 
         return response;
@@ -80,7 +80,7 @@ public class BaseTest {
 
         given().
                 header(authorization).
-                when().
+        when().
                 delete(getProjectsEndpoint(id));
     }
 
