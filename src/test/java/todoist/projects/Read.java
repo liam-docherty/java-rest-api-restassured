@@ -11,7 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static todoist.BaseTest.*;
 
-public class Get {
+public class Read {
 
     @Test
     public void retrieveAllProjectsSuccess() {

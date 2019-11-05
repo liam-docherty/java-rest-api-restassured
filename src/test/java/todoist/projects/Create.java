@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static todoist.BaseTest.*;
 
-public class Post {
+public class Create {
 
     // TODO: This can be turned into a parameterised test
     @Test
