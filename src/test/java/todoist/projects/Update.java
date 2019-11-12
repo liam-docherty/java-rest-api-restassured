@@ -1,19 +1,17 @@
 package todoist.projects;
 
-import io.restassured.config.RestAssuredConfig;
-import io.restassured.http.ContentType;
-import io.restassured.http.Header;
 import io.restassured.response.Response;
 import org.junit.Test;
 import todoist.entities.ProjectRequest;
 import todoist.entities.ProjectResponse;
 
-import static io.restassured.RestAssured.given;
-import static io.restassured.config.EncoderConfig.encoderConfig;
+import java.math.BigInteger;
+import java.util.UUID;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static todoist.BaseTest.*;
-import static todoist.BaseTest.teardownProject;
+import static todoist.BaseTest.deleteProject;
 
 public class Update {
 
@@ -21,46 +19,28 @@ public class Update {
     @Test
     public void updateProjectSuccess() {
 
-        Response newProjectResponse = setupProject("RetrieveProjectSuccess " + java.util.UUID.randomUUID());
-        ProjectResponse newProject = newProjectResponse.getBody().as(ProjectResponse.class);
-        Number id = newProject.getId();
+        ProjectRequest createPayload = new ProjectRequest("RetrieveProjectSuccess " + UUID.randomUUID());
+        Response createResponse = createProject(createPayload);
 
-        // TODO: Common header code, remove duplication
-        Header authorization = new Header("Authorization", getApiToken());
-        ProjectRequest payload = new ProjectRequest("UpdateProjectSuccess " + java.util.UUID.randomUUID());
+        ProjectResponse createResponseBody = createResponse.getBody().as(ProjectResponse.class);
+        BigInteger id = createResponseBody.getId();
 
-        Response postResponse =
+        ProjectRequest updatePayload = new ProjectRequest("UpdateProjectSuccess " + UUID.randomUUID());
 
-                given().
-                        // TODO: See if this config option can be moved to a Request Specification
-                        // This is required because the todoist API will reject the call if the 'charset=UTF-8' is appended
-                        config(RestAssuredConfig.config().encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false))).
-                        header(authorization).
-                        contentType(ContentType.JSON).
-                        body(payload).
-                when().
-                        post(getProjectsEndpoint(id));
+        Response updateResponse = updateProject(id, updatePayload);
 
-        assertThat(postResponse.getStatusCode(), is(204));
-        assertThat(postResponse.getBody().print(), is(""));
+        assertThat(updateResponse.getStatusCode(), is(204));
+        assertThat(updateResponse.getBody().print(), is(""));
 
-        Response getResponse =
+        Response retrieveResponse = retrieveProject(id);
+        ProjectResponse retrieveResponseBody = retrieveResponse.getBody().as(ProjectResponse.class);
 
-                given().
-                        header(authorization).
-                when().
-                        get(getProjectsEndpoint(id));
+        assertThat(retrieveResponseBody.getId(), is(id));
+        assertThat(retrieveResponseBody.getName(), is(updatePayload.getName()));
+        assertThat(retrieveResponseBody.getCommentCount(), is(createResponseBody.getCommentCount()));
+        assertThat(retrieveResponseBody.getOrder(), is(createResponseBody.getOrder()));
 
-        ProjectResponse getResponseBody = getResponse.getBody().as(ProjectResponse.class);
-
-        // TODO: Tidy up
-//        assertThat(getResponseBody.getId(), is(newProject.getId()));
-        System.out.println(getResponseBody.getName());
-        assertThat(getResponseBody.getName(), is(payload.getName()));
-//        assertThat(getResponseBody.getCommentCount(), is(newProject.getCommentCount()));
-//        assertThat(getResponseBody.getOrder(), is(newProject.getOrder()));
-
-        teardownProject(id);
+        deleteProject(id);
 
     }
 
