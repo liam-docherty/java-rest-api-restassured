@@ -6,12 +6,10 @@ import todoist.entities.ProjectRequest;
 import todoist.entities.ProjectResponse;
 
 import java.math.BigInteger;
-import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static todoist.BaseTest.*;
-import static todoist.BaseTest.deleteProject;
 
 public class Update {
 
@@ -19,13 +17,13 @@ public class Update {
     @Test
     public void updateProjectSuccess() {
 
-        ProjectRequest createPayload = new ProjectRequest("RetrieveProjectSuccess " + UUID.randomUUID());
+        ProjectRequest createPayload = new ProjectRequest(generateUniqueString("UpdateProjectSuccessCreate"));
         Response createResponse = createProject(createPayload);
 
         ProjectResponse createResponseBody = createResponse.getBody().as(ProjectResponse.class);
         BigInteger id = createResponseBody.getId();
 
-        ProjectRequest updatePayload = new ProjectRequest("UpdateProjectSuccess " + UUID.randomUUID());
+        ProjectRequest updatePayload = new ProjectRequest(generateUniqueString("UpdateProjectSuccessUpdate"));
 
         Response updateResponse = updateProject(id, updatePayload);
 

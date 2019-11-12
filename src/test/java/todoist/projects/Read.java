@@ -7,7 +7,6 @@ import todoist.entities.ProjectRequest;
 import todoist.entities.ProjectResponse;
 
 import java.math.BigInteger;
-import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -18,14 +17,13 @@ public class Read {
     @Test
     public void retrieveAllProjectsSuccess() {
 
-        // TODO: Replace all of these random guid generators with a method in base test
-        ProjectRequest postPayload1 = new ProjectRequest("RetrieveAllProjectsSuccess1 " + UUID.randomUUID());
+        ProjectRequest postPayload1 = new ProjectRequest(generateUniqueString("RetrieveAllProjectsSuccess1"));
         Response postResponse1 = createProject(postPayload1);
 
         ProjectResponse postResponseBody1 = postResponse1.getBody().as(ProjectResponse.class);
         BigInteger id1 = postResponseBody1.getId();
 
-        ProjectRequest postPayload2 = new ProjectRequest("RetrieveAllProjectsSuccess2 " + UUID.randomUUID());
+        ProjectRequest postPayload2 = new ProjectRequest(generateUniqueString("RetrieveAllProjectsSuccess2"));
         Response postResponse2 = createProject(postPayload2);
 
         ProjectResponse postResponseBody2 = postResponse2.getBody().as(ProjectResponse.class);
@@ -58,7 +56,7 @@ public class Read {
     @Test
     public void retrieveProjectSuccess() {
 
-        ProjectRequest postPayload = new ProjectRequest("RetrieveProjectSuccess " + java.util.UUID.randomUUID());
+        ProjectRequest postPayload = new ProjectRequest(generateUniqueString("RetrieveProjectSuccess"));
         Response postResponse = createProject(postPayload);
 
         ProjectResponse postResponseBody = postResponse.getBody().as(ProjectResponse.class);

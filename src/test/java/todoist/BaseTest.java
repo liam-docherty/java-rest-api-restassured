@@ -107,6 +107,8 @@ public class BaseTest {
 
     }
 
+    public static String generateUniqueString(String prefix) { return prefix + " " + java.util.UUID.randomUUID(); }
+
     public static ProjectResponse retrieveProjectFromProjectResponseArray(ProjectResponse[] projectArray, Number id) {
 
         ProjectResponse projectResponse = null;

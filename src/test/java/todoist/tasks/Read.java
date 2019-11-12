@@ -6,7 +6,7 @@ import org.junit.Test;
 import static io.restassured.RestAssured.given;
 import static todoist.BaseTest.*;
 
-public class Get {
+public class Read {
 
     @Test
     public void retrieveAllActiveTasks() {

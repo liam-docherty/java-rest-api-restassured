@@ -18,7 +18,7 @@ public class Create {
     @Test
     public void createProjectSuccess() {
 
-        ProjectRequest payload = new ProjectRequest("CreateProjectSuccess " + java.util.UUID.randomUUID());
+        ProjectRequest payload = new ProjectRequest(generateUniqueString("CreateProjectSuccess"));
         Response response = createProject(payload);
 
         ProjectResponse responseBody = response.getBody().as(ProjectResponse.class);
