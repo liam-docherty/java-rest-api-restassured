@@ -3,15 +3,17 @@ package todoist.entities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.math.BigInteger;
+
 @JsonPropertyOrder({"id", "order", "name", "comment_count"})
 public class ProjectResponse extends Project {
 
-    private Number id;
+    private BigInteger id;
     private int order;
     private int commentCount;
 
     @JsonProperty("id")
-    public Number getId() {
+    public BigInteger getId() {
         return id;
     }
 

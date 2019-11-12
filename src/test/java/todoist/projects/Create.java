@@ -8,11 +8,12 @@ import org.junit.Test;
 import todoist.entities.ProjectRequest;
 import todoist.entities.ProjectResponse;
 
+import java.math.BigInteger;
+
 import static io.restassured.RestAssured.given;
 import static io.restassured.config.EncoderConfig.encoderConfig;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static todoist.BaseTest.*;
 
 public class Create {
@@ -44,8 +45,7 @@ public class Create {
 
         assertThat(response.getStatusCode(), is(200));
         assertThat(response.contentType(), is(ContentType.JSON.toString()));
-        // TODO: Work out how to get the ID assertions working
-        // assertThat(responseBody.getId().intValue(), greaterThanOrEqualTo(0));
+        assertThat(responseBody.getId(), is(greaterThan(BigInteger.ZERO)));
         assertThat(responseBody.getName(), is(payload.getName()));
         assertThat(responseBody.getCommentCount(), is(0));
         assertThat(responseBody.getOrder(), is(greaterThanOrEqualTo(0)));
