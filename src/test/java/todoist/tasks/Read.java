@@ -11,8 +11,7 @@ public class Read {
     @Test
     public void retrieveAllActiveTasks() {
 
-        // TODO: Common header code, remove duplication
-        // TODO: Remove logging once happy with tests
+        // TODO: Incorporate into BaseTest
         Header authorization = getAuthorizationHeader();
 
         given().
