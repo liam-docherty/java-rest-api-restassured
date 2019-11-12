@@ -13,7 +13,7 @@ public class Get {
 
         // TODO: Common header code, remove duplication
         // TODO: Remove logging once happy with tests
-        Header authorization = new Header("Authorization", getApiToken());
+        Header authorization = getAuthorizationHeader();
 
         given().
                 header(authorization).

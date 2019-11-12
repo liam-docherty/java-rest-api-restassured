@@ -17,7 +17,12 @@ public class BaseTest {
     private static final String BASE_ENDPOINT = "https://api.todoist.com/rest/v1";
     private static final String PROJECTS_ENDPOINT = BASE_ENDPOINT + "/projects";
     private static final String TASKS_ENDPOINT = BASE_ENDPOINT + "/tasks";
+    // TODO: Hide token
     private static final String API_TOKEN = "Bearer a72e91d0ab45952b4a22ac4aef77041daf569a9b";
+    private static final Header AUTHORIZATION_HEADER = new Header("Authorization", API_TOKEN);
+    private static final ContentType CONTENT_TYPE = ContentType.JSON;
+    // This is required because the todoist API will reject the call if the 'charset=UTF-8' is appended
+    private static final RestAssuredConfig CONFIGURATION = RestAssuredConfig.config().encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false));
 
     public static String getProjectsEndpoint() {
         return PROJECTS_ENDPOINT;
@@ -28,67 +33,59 @@ public class BaseTest {
     public static String getTasksEndpoint() {
         return TASKS_ENDPOINT;
     }
-    public static String getApiToken() {
-        return API_TOKEN;
-    }
+    public static Header getAuthorizationHeader() { return AUTHORIZATION_HEADER; }
+    public static ContentType getContentType() { return CONTENT_TYPE; }
+    public static RestAssuredConfig getConfiguration() { return CONFIGURATION; }
 
     public static Response createProject(ProjectRequest payload) {
-        // TODO: Common header code, remove duplication
-        Header authorization = new Header("Authorization", getApiToken());
 
         Response response =
                 given().
-                        // This is required because the todoist API will reject the call if the 'charset=UTF-8' is appended
-                        config(RestAssuredConfig.config().encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false))).
-                        header(authorization).
-                        contentType(ContentType.JSON).
+                        config(CONFIGURATION).
+                        header(AUTHORIZATION_HEADER).
+                        contentType(CONTENT_TYPE).
                         body(payload).
                 when().
                         post(getProjectsEndpoint());
 
         return response;
+
     }
 
     public static Response retrieveProject(BigInteger id) {
-        // TODO: Common header code, remove duplication
-        Header authorization = new Header("Authorization", getApiToken());
 
         Response response =
 
                 given().
-                        header(authorization).
+                        header(AUTHORIZATION_HEADER).
                 when().
                         get(getProjectsEndpoint(id));
 
         return response;
+
     }
 
     public static Response retrieveAllProjects() {
-        // TODO: Common header code, remove duplication
-        Header authorization = new Header("Authorization", getApiToken());
 
         Response response =
 
                 given().
-                        header(authorization).
+                        header(AUTHORIZATION_HEADER).
                 when().
                         get(getProjectsEndpoint());
 
         return response;
+
     }
 
     public static Response updateProject(BigInteger id, ProjectRequest payload) {
 
-        // TODO: Common header code, remove duplication
-        Header authorization = new Header("Authorization", getApiToken());
-
         Response response =
 
                 given().
-                        // This is required because the todoist API will reject the call if the 'charset=UTF-8' is appended
-                        config(RestAssuredConfig.config().encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false))).
-                        header(authorization).
-                        contentType(ContentType.JSON).
+                        config(CONFIGURATION).
+                        header(AUTHORIZATION_HEADER).
+                        contentType(CONTENT_TYPE).
                         body(payload).
                 when().
                         post(getProjectsEndpoint(id));
@@ -98,20 +95,20 @@ public class BaseTest {
     }
 
     public static Response deleteProject(BigInteger id) {
-        // TODO: Common header code, remove duplication
-        Header authorization = new Header("Authorization", getApiToken());
 
         Response response =
 
             given().
-                    header(authorization).
+                    header(AUTHORIZATION_HEADER).
             when().
                     delete(getProjectsEndpoint(id));
 
         return response;
+
     }
 
     public static ProjectResponse retrieveProjectFromProjectResponseArray(ProjectResponse[] projectArray, Number id) {
+
         ProjectResponse projectResponse = null;
         for (int i = 0; i < projectArray.length; i++) {
             if (id.equals(projectArray[i].getId())) {
@@ -119,6 +116,7 @@ public class BaseTest {
             }
         }
         return projectResponse;
+
     }
 
 }
