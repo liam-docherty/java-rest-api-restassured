@@ -33,19 +33,19 @@ public class Read {
 
         ProjectResponse[] getResponseBody = getResponse.getBody().as(ProjectResponse[].class);
 
-        ProjectResponse projectResponse1 = retrieveProjectFromProjectResponseArray(getResponseBody, id1);
-        ProjectResponse projectResponse2 = retrieveProjectFromProjectResponseArray(getResponseBody, id2);
+        ProjectResponse project1ResponseBody = retrieveProjectFromProjectResponseArray(getResponseBody, id1);
+        ProjectResponse project2ResponseBody = retrieveProjectFromProjectResponseArray(getResponseBody, id2);
 
         assertThat(getResponse.getStatusCode(), is(200));
         assertThat(getResponse.contentType(), is(ContentType.JSON.toString()));
-        assertThat(projectResponse1.getId(), is(id1));
-        assertThat(projectResponse1.getName(), is(postResponseBody1.getName()));
-        assertThat(projectResponse1.getCommentCount(), is(postResponseBody1.getCommentCount()));
-        assertThat(projectResponse1.getOrder(), is(postResponseBody1.getOrder()));
-        assertThat(projectResponse2.getId(), is(id2));
-        assertThat(projectResponse2.getName(), is(postResponseBody2.getName()));
-        assertThat(projectResponse2.getCommentCount(), is(postResponseBody2.getCommentCount()));
-        assertThat(projectResponse2.getOrder(), is(postResponseBody2.getOrder()));
+        assertThat(project1ResponseBody.getId(), is(id1));
+        assertThat(project1ResponseBody.getName(), is(postResponseBody1.getName()));
+        assertThat(project1ResponseBody.getCommentCount(), is(postResponseBody1.getCommentCount()));
+        assertThat(project1ResponseBody.getOrder(), is(postResponseBody1.getOrder()));
+        assertThat(project2ResponseBody.getId(), is(id2));
+        assertThat(project2ResponseBody.getName(), is(postResponseBody2.getName()));
+        assertThat(project2ResponseBody.getCommentCount(), is(postResponseBody2.getCommentCount()));
+        assertThat(project2ResponseBody.getOrder(), is(postResponseBody2.getOrder()));
 
         deleteProject(id1);
         deleteProject(id2);
