@@ -23,10 +23,12 @@ public class Delete {
         BigInteger id = postResponseBody.getId();
 
         Response deleteResponse = deleteProject(id);
+
         assertThat(deleteResponse.getStatusCode(), is(204));
         assertThat(deleteResponse.getBody().print(), is(""));
 
         Response getResponse = retrieveProject(id);
+
         assertThat(getResponse.getStatusCode(), is(404));
 
     }
