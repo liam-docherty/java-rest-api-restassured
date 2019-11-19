@@ -98,10 +98,10 @@ public class BaseTest {
 
         Response response =
 
-            given().
-                    header(AUTHORIZATION_HEADER).
-            when().
-                    delete(getProjectsEndpoint(id));
+                given().
+                        header(AUTHORIZATION_HEADER).
+                when().
+                        delete(getProjectsEndpoint(id));
 
         return response;
 

@@ -12,12 +12,10 @@ public class ProjectResponse extends Project {
     private int order;
     private int commentCount;
 
-    @JsonProperty("id")
     public BigInteger getId() {
         return id;
     }
 
-    @JsonProperty("order")
     public int getOrder() {
         return order;
     }
