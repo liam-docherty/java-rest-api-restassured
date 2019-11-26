@@ -11,4 +11,14 @@
 
 @JsonProperty() can be used above deserialisation get() method to declare the json element name if it differs from the property name in your class
 
+## pom.xml
+Within the configuration of the `maven-compiler-plugin`, the expected version of Java is set to 11.
+
 ## Running Tests
+To run all tests, in the terminal simply run:<br>
+`mvn test`
+
+The list of included tests is specified within the `pom.xml` under the plugin configuration.
+
+You can refer to this stack overflow question for how to run a sub set of tests:<br>
+https://stackoverflow.com/questions/6819888/how-to-run-all-tests-in-a-particular-package-with-maven
