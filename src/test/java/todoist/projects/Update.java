@@ -17,13 +17,13 @@ public class Update {
     @Test
     public void updateProjectSuccess() {
 
-        ProjectRequest createPayload = new ProjectRequest(generateUniqueString("UpdateProjectSuccessCreate"));
+        ProjectRequest createPayload = new ProjectRequest(generateStringWithRandomUuid("UpdateProjectSuccessCreate"));
         Response createResponse = createProject(createPayload);
 
         ProjectResponse createResponseBody = createResponse.getBody().as(ProjectResponse.class);
         BigInteger id = createResponseBody.getId();
 
-        ProjectRequest updatePayload = new ProjectRequest(generateUniqueString("UpdateProjectSuccessUpdate"));
+        ProjectRequest updatePayload = new ProjectRequest(generateStringWithRandomUuid("UpdateProjectSuccessUpdate"));
 
         Response updateResponse = updateProject(id, updatePayload);
 

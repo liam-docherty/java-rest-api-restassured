@@ -17,13 +17,13 @@ public class Read {
     @Test
     public void retrieveAllProjectsSuccess() {
 
-        ProjectRequest postPayload1 = new ProjectRequest(generateUniqueString("RetrieveAllProjectsSuccess1"));
+        ProjectRequest postPayload1 = new ProjectRequest(generateStringWithRandomUuid("RetrieveAllProjectsSuccess1"));
         Response postResponse1 = createProject(postPayload1);
 
         ProjectResponse postResponseBody1 = postResponse1.getBody().as(ProjectResponse.class);
         BigInteger id1 = postResponseBody1.getId();
 
-        ProjectRequest postPayload2 = new ProjectRequest(generateUniqueString("RetrieveAllProjectsSuccess2"));
+        ProjectRequest postPayload2 = new ProjectRequest(generateStringWithRandomUuid("RetrieveAllProjectsSuccess2"));
         Response postResponse2 = createProject(postPayload2);
 
         ProjectResponse postResponseBody2 = postResponse2.getBody().as(ProjectResponse.class);
@@ -56,7 +56,7 @@ public class Read {
     @Test
     public void retrieveProjectSuccess() {
 
-        ProjectRequest postPayload = new ProjectRequest(generateUniqueString("RetrieveProjectSuccess"));
+        ProjectRequest postPayload = new ProjectRequest(generateStringWithRandomUuid("RetrieveProjectSuccess"));
         Response postResponse = createProject(postPayload);
 
         ProjectResponse postResponseBody = postResponse.getBody().as(ProjectResponse.class);

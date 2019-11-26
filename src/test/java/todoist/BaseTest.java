@@ -107,7 +107,9 @@ public class BaseTest {
 
     }
 
-    public static String generateUniqueString(String prefix) { return prefix + " " + java.util.UUID.randomUUID(); }
+    public static String generateStringWithRandomUuid(String prefix) { return prefix + " " + java.util.UUID.randomUUID(); }
+
+    public static String generateStringWithSpecialCharacters(String prefix) { return prefix + " " + "!£$%^&*(){}:'|/,.~`"; }
 
     public static ProjectResponse retrieveProjectFromProjectResponseArray(ProjectResponse[] projectArray, Number id) {
 

@@ -16,7 +16,7 @@ public class Delete {
     @Test
     public void deleteProjectSuccess() {
 
-        ProjectRequest postPayload = new ProjectRequest(generateUniqueString("DeleteProjectSuccess"));
+        ProjectRequest postPayload = new ProjectRequest(generateStringWithRandomUuid("DeleteProjectSuccess"));
         Response postResponse = createProject(postPayload);
 
         ProjectResponse postResponseBody = postResponse.getBody().as(ProjectResponse.class);
