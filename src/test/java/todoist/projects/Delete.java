@@ -16,7 +16,7 @@ public class Delete {
     @Test
     public void deleteProjectSuccess() {
 
-        ProjectRequest postPayload = new ProjectRequest(generateUniqueString("DeleteProjectSuccess"));
+        ProjectRequest postPayload = new ProjectRequest(generateStringWithRandomUuid("DeleteProjectSuccess"));
         Response postResponse = createProject(postPayload);
 
         ProjectResponse postResponseBody = postResponse.getBody().as(ProjectResponse.class);
@@ -32,5 +32,7 @@ public class Delete {
         assertThat(getResponse.getStatusCode(), is(404));
 
     }
+
+    // TODO: Add invalid test
 
 }

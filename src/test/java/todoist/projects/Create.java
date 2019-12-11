@@ -1,8 +1,12 @@
 package todoist.projects;
 
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import todoist.entities.ProjectRequest;
 import todoist.entities.ProjectResponse;
 
@@ -12,13 +16,27 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static todoist.BaseTest.*;
 
+@RunWith(DataProviderRunner.class)
 public class Create {
 
-    // TODO: This can be turned into a parameterised test
-    @Test
-    public void createProjectSuccess() {
+    private static String namePrefix = "CreateProjectSuccess";
 
-        ProjectRequest payload = new ProjectRequest(generateUniqueString("CreateProjectSuccess"));
+    @DataProvider
+    public static String[] projectNames() {
+
+        // TODO: Add max characters example
+        return new String[]{
+                generateStringWithRandomUuid(namePrefix),
+                generateStringWithSpecialCharacters(namePrefix)
+        };
+
+    }
+
+    @Test
+    @UseDataProvider("projectNames")
+    public void createProjectSuccess(String name) {
+
+        ProjectRequest payload = new ProjectRequest(name);
         Response response = createProject(payload);
 
         ProjectResponse responseBody = response.getBody().as(ProjectResponse.class);
@@ -34,8 +52,6 @@ public class Create {
 
     }
 
-    // TODO: Add tests with special characters
-    // TODO: Add max characters tests
-
+    // TODO: Add invalid parameterised test
 
 }
